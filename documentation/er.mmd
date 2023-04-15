@@ -1,0 +1,16 @@
+erDiagram
+    subject {
+        UUID subject_id
+        varchar name
+        text image_url
+    }
+    activity {
+        UUID activity_id
+        UUID subject_id
+        UUID assigned_user_id
+        text name
+        text location
+        text long_desc
+        timestampz start_time
+    }
+    subject ||..o{ activity : has

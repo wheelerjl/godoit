@@ -6,6 +6,7 @@ require (
 	github.com/gin-gonic/gin v1.9.0
 	github.com/go-playground/validator/v10 v10.11.2
 	github.com/kelseyhightower/envconfig v1.4.0
+	github.com/lib/pq v1.10.8
 )
 
 require (
