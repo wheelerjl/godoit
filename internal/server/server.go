@@ -43,6 +43,6 @@ func NewServer(conf config.Config) Server {
 	return s
 }
 
-func (s *Server) Start() error {
+func (s Server) Start() error {
 	return s.router.Run(fmt.Sprintf(":%d", s.config.Port))
 }
