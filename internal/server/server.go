@@ -23,15 +23,35 @@ func NewServer(conf config.Config) Server {
 	}
 
 	s.router = gin.Default()
-	s.router.GET("/readiness", func(ctx *gin.Context) {
-		ctx.JSON(http.StatusOK, gin.H{
-			"status": "ok",
-		})
+	s.SetupRoutes()
+	return s
+}
+
+func (s Server) Start() error {
+	return s.router.Run(fmt.Sprintf(":%d", s.config.Port))
+}
+
+func (s Server) SetupRoutes() {
+	// Change default handling for if the route isn't found to present a json message
+	s.router.NoRoute(func(c *gin.Context) {
+		c.JSON(
+			http.StatusNotFound,
+			gin.H{"status": "error", "message": "route not found"},
+		)
 	})
+
+	s.router.GET("/readiness", func(ctx *gin.Context) {
+		ctx.JSON(
+			http.StatusOK,
+			gin.H{"status": "ok"},
+		)
+	})
+
 	s.router.GET("/liveness", func(ctx *gin.Context) {
-		ctx.JSON(http.StatusOK, gin.H{
-			"status": "ok",
-		})
+		ctx.JSON(
+			http.StatusOK,
+			gin.H{"status": "ok"},
+		)
 	})
 
 	// Create a config route to print environment variables if applicable
@@ -40,9 +60,4 @@ func NewServer(conf config.Config) Server {
 			ctx.JSON(http.StatusOK, s.config)
 		})
 	}
-	return s
-}
-
-func (s Server) Start() error {
-	return s.router.Run(fmt.Sprintf(":%d", s.config.Port))
 }
