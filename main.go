@@ -13,8 +13,7 @@ func main() {
 		log.Fatalf("unable to process config: %v", err)
 	}
 
-	s := server.NewServer(conf)
-	if err := s.Start(); err != nil {
+	if err := server.NewServer(conf).Start(); err != nil {
 		log.Fatalf("unable to start server: %v", err)
 	}
 }
