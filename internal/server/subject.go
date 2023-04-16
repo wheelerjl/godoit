@@ -12,11 +12,10 @@ import (
 )
 
 func (s Server) AddSubject(ctx *gin.Context) {
-	// Doesn't read body, just adds data with new uuid
-	subject := database.Subject{
-		SubjectID: uuid.NewString(),
-		Name:      "EasterPie",
-		ImageURL:  "https://http.cat/200",
+	var subject database.Subject
+	if err := ctx.ShouldBindJSON(&subject); err != nil {
+		SetErrorResponse(ctx, http.StatusBadRequest, "failure binding body", err)
+		return
 	}
 	newSubject, err := s.Config.Database.AddSubject(ctx.Request.Context(), subject)
 	if err != nil {
