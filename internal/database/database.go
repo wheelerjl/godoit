@@ -15,11 +15,12 @@ type Client struct {
 
 func NewDatabaseClient(variables variables.Variables) (client Client, err error) {
 	connectionURL := fmt.Sprintf(
-		"postgres://%s:%s@%s:%d/%s",
+		"postgres://%s:%s@%s:%d/%s?search_path=%s",
 		variables.DatabaseUser,
 		variables.DatabasePass,
 		variables.DatabaseHost,
 		5432,
+		"godoit",
 		"godoit",
 	)
 
