@@ -57,7 +57,7 @@ func buildMessage(userID string, activities []database.Activity, subjects []data
 						Activites: []database.Activity{activity},
 					}
 					data = append(data, newData)
-					indexMap[subject.SubjectID] = index + 1
+					indexMap[subject.SubjectID] = index
 					index++
 				} else {
 					data[i].Activites = append(data[i].Activites, activity)
@@ -72,30 +72,30 @@ func buildMessage(userID string, activities []database.Activity, subjects []data
 	for _, value := range data {
 		var fields []*discordgo.MessageEmbedField
 		for _, activity := range value.Activites {
-			dateField := discordgo.MessageEmbedField{
-				Name:   "When",
-				Value:  fmt.Sprintf("<t:%d:d>", activity.StartTime.Unix()),
-				Inline: true,
-			}
-			nameField := discordgo.MessageEmbedField{
+			whatField := discordgo.MessageEmbedField{
 				Name:   "What",
 				Value:  activity.Name,
 				Inline: true,
 			}
-			locationField := discordgo.MessageEmbedField{
+			whenField := discordgo.MessageEmbedField{
+				Name:   "When",
+				Value:  fmt.Sprintf("<t:%d:d>", activity.StartTime.Unix()),
+				Inline: true,
+			}
+			whereField := discordgo.MessageEmbedField{
 				Name:   "Where",
 				Value:  activity.Location,
 				Inline: true,
 			}
-			descriptionField := discordgo.MessageEmbedField{
+			howField := discordgo.MessageEmbedField{
 				Name:   "How",
 				Value:  activity.Description,
 				Inline: false,
 			}
-			fields = append(fields, &dateField)
-			fields = append(fields, &nameField)
-			fields = append(fields, &locationField)
-			fields = append(fields, &descriptionField)
+			fields = append(fields, &whatField)
+			fields = append(fields, &whenField)
+			fields = append(fields, &whereField)
+			fields = append(fields, &howField)
 		}
 		newEmbed := discordgo.MessageEmbed{
 			Type:  discordgo.EmbedTypeRich,
