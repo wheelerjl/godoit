@@ -9,10 +9,10 @@ CREATE TABLE subjects (
 
 CREATE TABLE activities (
   activity_id UUID PRIMARY KEY,
-  subject_id UUID NOT NULL REFERENCES subject(subject_id),
+  subject_id UUID NOT NULL REFERENCES subjects(subject_id),
   assigned_user_id TEXT,
   name TEXT NOT NULL,
   location TEXT,
-  long_desc TEXT,
+  description TEXT,
   start_time TIMESTAMP WITH TIME ZONE NOT NULL
 );

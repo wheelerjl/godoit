@@ -7,7 +7,7 @@ import (
 )
 
 type HealthCheck struct {
-	Status string
+	Status string `json:"status"`
 }
 
 func (s Server) Liveness(ctx *gin.Context) {

@@ -5,8 +5,16 @@ import (
 
 	"github.com/bwmarrin/discordgo"
 
+	"github.com/wheelerjl/godoit/internal/database"
 	"github.com/wheelerjl/godoit/internal/variables"
 )
+
+const embedColorBlue = 100
+
+type EmbedData struct {
+	Subject  database.Subject
+	Activity database.Activity
+}
 
 type BotClient struct {
 	Session *discordgo.Session
@@ -36,26 +44,14 @@ func (b BotClient) SendNotification(userID, msg string) error {
 	return nil
 }
 
-func (b BotClient) SendComplexNotification(userID, msg string) error {
+func (b BotClient) SendComplexNotification(userID string, msg discordgo.MessageSend) error {
 	ch, err := b.Session.UserChannelCreate(userID)
 	if err != nil {
 		return err
 	}
 
 	b.Session.ChannelMessageDelete(ch.ID, ch.LastMessageID)
-
-	message := discordgo.MessageSend{
-		Embed: &discordgo.MessageEmbed{
-			Type:        discordgo.EmbedTypeRich,
-			Title:       "Image of Gopher",
-			Description: "Todo",
-			Color:       100,
-			Thumbnail: &discordgo.MessageEmbedThumbnail{
-				URL: "https://miro.medium.com/v2/resize:fit:1000/0*YISbBYJg5hkJGcQd.png",
-			},
-		},
-	}
-	if _, err := b.Session.ChannelMessageSendComplex(ch.ID, &message); err != nil {
+	if _, err := b.Session.ChannelMessageSendComplex(ch.ID, &msg); err != nil {
 		return err
 	}
 	return nil

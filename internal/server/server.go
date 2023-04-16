@@ -62,4 +62,10 @@ func (s Server) SetupRoutes() {
 	subjectGroup.GET("", s.GetSubjects)
 	subjectGroup.GET("/:id", s.GetSubject)
 	subjectGroup.DELETE("/:id", s.RemoveSubject)
+
+	activityGroup := s.Router.Group("/activities")
+	activityGroup.POST("", s.AddActivity)
+	activityGroup.GET("", s.GetActivities)
+	activityGroup.GET("/:id", s.GetActivity)
+	activityGroup.DELETE("/:id", s.RemoveActivity)
 }
