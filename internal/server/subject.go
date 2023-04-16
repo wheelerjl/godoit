@@ -20,7 +20,7 @@ func (s Server) AddSubject(ctx *gin.Context) {
 	}
 	newSubject, err := s.Config.Database.AddSubject(ctx.Request.Context(), subject)
 	if err != nil {
-		ErrorResponse(ctx, http.StatusInternalServerError, "unable to add subject", err)
+		SetErrorResponse(ctx, http.StatusInternalServerError, "unable to add subject", err)
 		return
 	}
 	ctx.JSON(http.StatusCreated, newSubject)
@@ -29,7 +29,7 @@ func (s Server) AddSubject(ctx *gin.Context) {
 func (s Server) GetSubjects(ctx *gin.Context) {
 	subjects, err := s.Config.Database.GetSubjects(ctx.Request.Context())
 	if err != nil {
-		ErrorResponse(ctx, http.StatusInternalServerError, "unable to get subjects", err)
+		SetErrorResponse(ctx, http.StatusInternalServerError, "unable to get subjects", err)
 		return
 	}
 	ctx.JSON(http.StatusOK, subjects)
@@ -38,16 +38,16 @@ func (s Server) GetSubjects(ctx *gin.Context) {
 func (s Server) GetSubject(ctx *gin.Context) {
 	subjectID := ctx.Param("id")
 	if _, err := uuid.Parse(subjectID); err != nil {
-		ErrorResponse(ctx, http.StatusBadRequest, "invalid uuid", err)
+		SetErrorResponse(ctx, http.StatusBadRequest, "invalid uuid", err)
 		return
 	}
 
 	newSubject, err := s.Config.Database.GetSubject(ctx.Request.Context(), subjectID)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
-			ErrorResponse(ctx, http.StatusNotFound, "subject not found", err)
+			SetErrorResponse(ctx, http.StatusNotFound, "subject not found", err)
 		} else {
-			ErrorResponse(ctx, http.StatusInternalServerError, "unable to get subject", err)
+			SetErrorResponse(ctx, http.StatusInternalServerError, "unable to get subject", err)
 		}
 		return
 	}
@@ -58,11 +58,11 @@ func (s Server) GetSubject(ctx *gin.Context) {
 func (s Server) RemoveSubject(ctx *gin.Context) {
 	subjectID := ctx.Param("id")
 	if _, err := uuid.Parse(subjectID); err != nil {
-		ErrorResponse(ctx, http.StatusBadRequest, "invalid uuid", err)
+		SetErrorResponse(ctx, http.StatusBadRequest, "invalid uuid", err)
 		return
 	}
 	if err := s.Config.Database.RemoveSubject(ctx.Request.Context(), subjectID); err != nil {
-		ErrorResponse(ctx, http.StatusInternalServerError, "unable to remove subject", err)
+		SetErrorResponse(ctx, http.StatusInternalServerError, "unable to remove subject", err)
 		return
 	}
 	ctx.Status(http.StatusNoContent)

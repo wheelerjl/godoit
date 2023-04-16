@@ -16,7 +16,7 @@ func (s Server) Liveness(ctx *gin.Context) {
 
 func (s Server) Readiness(ctx *gin.Context) {
 	if err := s.Config.Database.DB.Ping(ctx.Request.Context()); err != nil {
-		ErrorResponse(ctx, http.StatusServiceUnavailable, "unable to verify connection to database", err)
+		SetErrorResponse(ctx, http.StatusServiceUnavailable, "unable to verify connection to database", err)
 		return
 	}
 	ctx.JSON(http.StatusOK, HealthCheck{Status: "ok"})

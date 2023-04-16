@@ -8,10 +8,10 @@ import (
 )
 
 func (s Server) RouteNotFound(ctx *gin.Context) {
-	ErrorResponse(ctx, http.StatusNotFound, "route not found", nil)
+	SetErrorResponse(ctx, http.StatusNotFound, "route not found", nil)
 }
 
-func ErrorResponse(ctx *gin.Context, code int, msg string, err error) {
+func SetErrorResponse(ctx *gin.Context, code int, msg string, err error) {
 	if err != nil {
 		msg = fmt.Sprintf("%s: %v", msg, err)
 	}
