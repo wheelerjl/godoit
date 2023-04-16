@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/wheelerjl/godoit/internal/database"
+	"github.com/wheelerjl/godoit/internal/discord"
 	"github.com/wheelerjl/godoit/internal/server"
 	"github.com/wheelerjl/godoit/internal/variables"
 )
@@ -22,6 +23,11 @@ func main() {
 	config.Database, err = database.NewDatabaseClient(config.Variables)
 	if err != nil {
 		log.Fatalf("unable to create database client: %v", err)
+	}
+
+	config.DiscordBot, err = discord.NewDiscordBotClient(config.Variables)
+	if err != nil {
+		log.Fatalf("unable to create discord bot client: %v", err)
 	}
 
 	if err := server.NewServer(config).Start(); err != nil {

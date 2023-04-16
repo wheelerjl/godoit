@@ -1,30 +1,29 @@
 package database
 
 import (
-	"database/sql"
+	"context"
 	"fmt"
 
-	_ "github.com/lib/pq"
+	"github.com/jackc/pgx/v5/pgxpool"
 
 	"github.com/wheelerjl/godoit/internal/variables"
 )
 
-const (
-	port    = 5432
-	timeout = 3
-	name    = "godoit"
-)
-
 type Client struct {
-	DB *sql.DB
+	DB *pgxpool.Pool
 }
 
 func NewDatabaseClient(variables variables.Variables) (client Client, err error) {
-	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
-		"password=%s dbname=%s sslmode=disable connect_timeout=%d",
-		variables.DbHost, port, variables.DbUser, variables.DbPass, name, timeout)
+	connectionURL := fmt.Sprintf(
+		"postgres://%s:%s@%s:%d/%s",
+		variables.DatabaseUser,
+		variables.DatabasePass,
+		variables.DatabaseHost,
+		5432,
+		"godoit",
+	)
 
-	client.DB, err = sql.Open("postgres", psqlInfo)
+	client.DB, err = pgxpool.New(context.Background(), connectionURL)
 	if err != nil {
 		return client, err
 	}

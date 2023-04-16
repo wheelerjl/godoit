@@ -6,12 +6,13 @@ import (
 )
 
 type Variables struct {
-	Env    string `json:"env" envconfig:"environment"`
-	Port   int    `json:"port" default:"8080"`
-	Debug  bool   `json:"debug" default:"false"`
-	DbHost string `json:"db_host" envconfig:"db_host" required:"true"`
-	DbUser string `json:"db_user" envconfig:"db_user" required:"true"`
-	DbPass string `json:"db_pass" envconfig:"db_pass" required:"true"`
+	Env          string `json:"env" envconfig:"environment" required:"true"`
+	Port         int    `json:"port" default:"8080"`
+	Debug        bool   `json:"debug" default:"false"`
+	DatabaseHost string `json:"database_host" envconfig:"database_host" required:"true"`
+	DatabaseUser string `json:"database_user" envconfig:"database_user" required:"true"`
+	DatabasePass string `json:"database_pass" envconfig:"database_pass" required:"true"`
+	DiscordToken string `json:"discord_token" envconfig:"discord_token" required:"true"`
 }
 
 func ProcessVariables() (Variables, error) {
