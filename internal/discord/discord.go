@@ -2,7 +2,6 @@ package discord
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/bwmarrin/discordgo"
 
@@ -45,33 +44,14 @@ func (b BotClient) SendNotification(userID, msg string) error {
 	return nil
 }
 
-func (b BotClient) SendComplexNotification(userID string, data []EmbedData) error {
+func (b BotClient) SendComplexNotification(userID string, msg discordgo.MessageSend) error {
 	ch, err := b.Session.UserChannelCreate(userID)
 	if err != nil {
 		return err
 	}
 
 	b.Session.ChannelMessageDelete(ch.ID, ch.LastMessageID)
-
-	var embeds []*discordgo.MessageEmbed
-	for _, embed := range data {
-		newEmbed := discordgo.MessageEmbed{
-			Type:        discordgo.EmbedTypeRich,
-			Title:       embed.Activity.Name,
-			Description: embed.Activity.Description,
-			Timestamp:   embed.Activity.StartTime.Format(time.RFC3339),
-			Color:       embedColorBlue,
-			Thumbnail: &discordgo.MessageEmbedThumbnail{
-				URL: embed.Subject.ImageURL,
-			},
-		}
-		embeds = append(embeds, &newEmbed)
-	}
-	message := &discordgo.MessageSend{
-		Content: "Activities",
-		Embeds:  embeds,
-	}
-	if _, err := b.Session.ChannelMessageSendComplex(ch.ID, message); err != nil {
+	if _, err := b.Session.ChannelMessageSendComplex(ch.ID, &msg); err != nil {
 		return err
 	}
 	return nil
