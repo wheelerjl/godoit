@@ -101,7 +101,7 @@ func buildMessage(userID string, activities []database.Activity, subjects []data
 			Type:  discordgo.EmbedTypeRich,
 			Title: fmt.Sprintf("Who: %s", value.Subject.Name),
 			Color: embedColorBlue,
-			Thumbnail: &discordgo.MessageEmbedThumbnail{
+			Image: &discordgo.MessageEmbedImage{
 				URL: value.Subject.ImageURL,
 			},
 			Fields: fields,
