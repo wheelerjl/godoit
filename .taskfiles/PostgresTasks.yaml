@@ -53,5 +53,5 @@ tasks:
       - task: stop
       - task: prune
       - task: start
-      - sleep 1s
+      - sleep 3s
       - task: migrate-up
