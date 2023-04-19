@@ -1,0 +1,9 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+  MIGRATION_PATH: $GOPATH/src/github.com/wheelerjl/godoit/migrations
+
+includes:
+  postgres: .taskfiles/PostgresTasks.yaml
