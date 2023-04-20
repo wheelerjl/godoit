@@ -67,18 +67,11 @@ func buildMessage(userID string, activities []database.Activity, subjects []data
 			}
 		}
 	}
-	emptyField := discordgo.MessageEmbedField{
-		Inline: true,
-	}
 
 	var embeds []*discordgo.MessageEmbed
 	for _, value := range data {
 		var fields []*discordgo.MessageEmbedField
 		for _, activity := range value.Activites {
-			labelField := discordgo.MessageEmbedField{
-				Name:   fmt.Sprintf("Task for %s", value.Subject.Name),
-				Inline: true,
-			}
 			whatField := discordgo.MessageEmbedField{
 				Name:   "What",
 				Value:  activity.Name,
@@ -99,9 +92,6 @@ func buildMessage(userID string, activities []database.Activity, subjects []data
 				Value:  activity.Description,
 				Inline: false,
 			}
-			fields = append(fields, &emptyField)
-			fields = append(fields, &labelField)
-			fields = append(fields, &emptyField)
 			fields = append(fields, &whatField)
 			fields = append(fields, &whenField)
 			fields = append(fields, &whereField)
@@ -110,6 +100,7 @@ func buildMessage(userID string, activities []database.Activity, subjects []data
 		newEmbed := discordgo.MessageEmbed{
 			Type:  discordgo.EmbedTypeRich,
 			Color: embedColorBlue,
+			Title: fmt.Sprintf("__**Task(s) for %s**__", value.Subject.Name),
 			Image: &discordgo.MessageEmbedImage{
 				URL: value.Subject.ImageURL,
 			},

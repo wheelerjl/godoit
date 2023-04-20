@@ -5,16 +5,10 @@ import (
 
 	"github.com/bwmarrin/discordgo"
 
-	"github.com/wheelerjl/godoit/internal/database"
 	"github.com/wheelerjl/godoit/internal/variables"
 )
 
 const embedColorBlue = 100
-
-type EmbedData struct {
-	Subject  database.Subject
-	Activity database.Activity
-}
 
 type BotClient struct {
 	Session *discordgo.Session

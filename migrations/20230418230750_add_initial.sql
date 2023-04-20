@@ -20,4 +20,3 @@ CREATE TABLE godoit.activities (
 DROP TABLE godoit.activities;
 DROP TABLE godoit.subjects;
 DROP SCHEMA godoit;
-
